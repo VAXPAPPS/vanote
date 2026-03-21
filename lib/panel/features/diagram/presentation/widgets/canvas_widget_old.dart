@@ -7,7 +7,7 @@ import '../bloc/diagram_state.dart';
 import '../painters/diagram_painters.dart';
 
 class CanvasWidget extends StatefulWidget {
-  const CanvasWidget({Key? key}) : super(key: key);
+  const CanvasWidget({super.key});
 
   @override
   State<CanvasWidget> createState() => _CanvasWidgetState();
@@ -100,7 +100,7 @@ class _CanvasWidgetState extends State<CanvasWidget> {
                       ),
                       size: Size(state.canvasWidth, state.canvasHeight),
                     );
-                  }).toList(),
+                  }),
                   // Connection preview
                   if (_connectionStartNode != null && _connectionPreviewEnd != null)
                     CustomPaint(
@@ -120,7 +120,7 @@ class _CanvasWidgetState extends State<CanvasWidget> {
                       top: node.position.dy,
                       child: _buildNodeWidget(context, state, node),
                     );
-                  }).toList(),
+                  }),
                 ],
               ),
             ),
@@ -288,7 +288,7 @@ class _CanvasWidgetState extends State<CanvasWidget> {
               width: handleSize,
               height: handleSize,
               decoration: BoxDecoration(
-                color: Colors.cyan.withOpacity(0.8),
+                color: Colors.cyan.withValues(alpha: 0.8),
                 shape: BoxShape.circle,
                 border: Border.all(color: Colors.white, width: 2.5),
               ),
@@ -305,27 +305,27 @@ class _CanvasWidgetState extends State<CanvasWidget> {
       : Border.all(color: node.color, width: 2);
 
     final shadow = isSelected
-      ? [BoxShadow(color: Colors.cyan.withOpacity(0.5), blurRadius: 15, spreadRadius: 5)]
-      : [BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 8, spreadRadius: 2)];
+      ? [BoxShadow(color: Colors.cyan.withValues(alpha: 0.5), blurRadius: 15, spreadRadius: 5)]
+      : [BoxShadow(color: Colors.black.withValues(alpha: 0.3), blurRadius: 8, spreadRadius: 2)];
 
     switch (node.shapeType) {
       case ShapeType.circle:
         return BoxDecoration(
           shape: BoxShape.circle,
-          color: node.color.withOpacity(0.2),
+          color: node.color.withValues(alpha: 0.2),
           border: border,
           boxShadow: shadow,
         );
       case ShapeType.roundedRect:
         return BoxDecoration(
-          color: node.color.withOpacity(0.2),
+          color: node.color.withValues(alpha: 0.2),
           borderRadius: BorderRadius.circular(20),
           border: border,
           boxShadow: shadow,
         );
       default:
         return BoxDecoration(
-          color: node.color.withOpacity(0.2),
+          color: node.color.withValues(alpha: 0.2),
           borderRadius: BorderRadius.circular(8),
           border: border,
           boxShadow: shadow,
@@ -356,8 +356,8 @@ class _CanvasWidgetState extends State<CanvasWidget> {
     }
   }
 
-  void _showNodeContextMenu(BuildContext context, DiagramNode node, Offset position) {
-    showMenu<String>(
+  Future<void> _showNodeContextMenu(BuildContext context, DiagramNode node, Offset position) async {
+    final value = await showMenu<String>(
       context: context,
       position: RelativeRect.fromLTRB(position.dx, position.dy, position.dx, position.dy),
       items: [
@@ -385,13 +385,13 @@ class _CanvasWidgetState extends State<CanvasWidget> {
         ),
       ],
       color: const Color.fromARGB(66, 0, 0, 0),
-    ).then((value) {
-      if (value == 'edit') {
-        context.read<DiagramBloc>().add(SelectNodeEvent(nodeId: node.id));
-        context.read<DiagramBloc>().add(const ShowPropertiesPanelEvent(show: true));
-      } else if (value == 'delete') {
-        context.read<DiagramBloc>().add(DeleteNodeEvent(nodeId: node.id));
-      }
-    });
+    );
+    if (!context.mounted) return;
+    if (value == 'edit') {
+      context.read<DiagramBloc>().add(SelectNodeEvent(nodeId: node.id));
+      context.read<DiagramBloc>().add(const ShowPropertiesPanelEvent(show: true));
+    } else if (value == 'delete') {
+      context.read<DiagramBloc>().add(DeleteNodeEvent(nodeId: node.id));
+    }
   }
 }

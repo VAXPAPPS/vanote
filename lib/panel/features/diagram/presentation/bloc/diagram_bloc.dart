@@ -541,7 +541,7 @@ class DiagramBloc extends Bloc<DiagramEvent, DiagramState> {
     
     // Create new nodes with new IDs
     for (final node in _clipboardNodes) {
-      final newId = DateTime.now().millisecondsSinceEpoch.toString() + '_${newNodes.length}';
+      final newId = '${DateTime.now().millisecondsSinceEpoch}_${newNodes.length}';
       nodeIdMap[node.id] = newId;
       newNodes.add(_copyNode(node).copyWith(
         id: newId,
@@ -556,7 +556,7 @@ class DiagramBloc extends Bloc<DiagramEvent, DiagramState> {
       final newToId = nodeIdMap[conn.toNodeId];
       if (newFromId != null && newToId != null) {
         newConnections.add(_copyConnection(conn).copyWith(
-          id: DateTime.now().millisecondsSinceEpoch.toString() + '_${newConnections.length}',
+          id: '${DateTime.now().millisecondsSinceEpoch}_${newConnections.length}',
           fromNodeId: newFromId,
           toNodeId: newToId,
         ));
@@ -906,4 +906,3 @@ class DiagramBloc extends Bloc<DiagramEvent, DiagramState> {
     }
   }
 }
-

@@ -7,7 +7,7 @@ import '../../domain/entities/diagram_node.dart';
 import '../../domain/entities/diagram_connection.dart';
 
 class PropertiesPanelWidget extends StatefulWidget {
-  const PropertiesPanelWidget({Key? key}) : super(key: key);
+  const PropertiesPanelWidget({super.key});
 
   @override
   State<PropertiesPanelWidget> createState() => _PropertiesPanelWidgetState();

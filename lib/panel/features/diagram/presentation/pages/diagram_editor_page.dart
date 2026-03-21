@@ -10,7 +10,7 @@ import '../widgets/properties_panel_widget.dart';
 class DiagramEditorPage extends StatefulWidget {
   final ValueChanged<List<Widget>>? onActionsAvailable;
 
-  const DiagramEditorPage({Key? key, this.onActionsAvailable}) : super(key: key);
+  const DiagramEditorPage({super.key, this.onActionsAvailable});
 
   @override
   State<DiagramEditorPage> createState() => _DiagramEditorPageState();
@@ -154,7 +154,7 @@ class _DiagramEditorContent extends StatelessWidget {
                 child: Row(
                   children: [
                     Text(
-                      'Zoom: ${zoomPercent}%',
+                      'Zoom: $zoomPercent%',
                       style: const TextStyle(color: Colors.white70, fontSize: 12),
                     ),
                     const SizedBox(width: 20),

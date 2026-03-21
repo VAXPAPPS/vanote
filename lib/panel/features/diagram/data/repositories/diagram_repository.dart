@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../domain/entities/diagram_node.dart';
 import '../../domain/entities/diagram_connection.dart';
+import '../../domain/entities/diagram_node.dart';
 
 class DiagramRepository {
   static const String _diagramKey = 'saved_diagrams';
@@ -163,4 +163,3 @@ class DiagramRepository {
     return prefs.getStringList('$_templatesKey:_names') ?? [];
   }
 }
-

@@ -13,7 +13,7 @@ class GridPainter extends CustomPainter {
     if (!showGrid) return;
     
     final paint = Paint()
-      ..color = Colors.grey.withOpacity(0.2)
+      ..color = Colors.grey.withValues(alpha: 0.2)
       ..strokeWidth = 0.5;
 
     for (double x = 0; x < size.width; x += gridSize) {

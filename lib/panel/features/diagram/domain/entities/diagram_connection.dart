@@ -30,7 +30,7 @@ class DiagramConnection {
     'fromNodeId': fromNodeId,
     'toNodeId': toNodeId,
     'label': label,
-    'color': color.value,
+    'color': color.toARGB32(),
     'strokeWidth': strokeWidth,
     'hasArrow': hasArrow,
     'style': style.toString(),

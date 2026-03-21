@@ -93,7 +93,7 @@ class DiagramNode {
     'id': id,
     'position': {'dx': position.dx, 'dy': position.dy},
     'content': content,
-    'color': color.value,
+    'color': color.toARGB32(),
     'shapeType': shapeType.toString(),
     'width': width,
     'height': height,
@@ -102,7 +102,7 @@ class DiagramNode {
     'isBold': isBold,
     'isItalic': isItalic,
     'isUnderlined': isUnderlined,
-    'textColor': textColor.value,
+    'textColor': textColor.toARGB32(),
   };
 
   factory DiagramNode.fromJson(Map<String, dynamic> json) {
@@ -123,7 +123,7 @@ class DiagramNode {
       isBold: json['isBold'] ?? false,
       isItalic: json['isItalic'] ?? false,
       isUnderlined: json['isUnderlined'] ?? false,
-      textColor: Color(json['textColor'] ?? Colors.white.value),
+      textColor: Color(json['textColor'] ?? Colors.white.toARGB32()),
     );
   }
 

@@ -10,7 +10,7 @@ import 'canvas_widget.dart';
 class ToolbarWidget extends StatelessWidget {
   final GlobalKey<CanvasWidgetState>? canvasKey;
   
-  const ToolbarWidget({Key? key, this.canvasKey}) : super(key: key);
+  const ToolbarWidget({super.key, this.canvasKey});
 
   @override
   Widget build(BuildContext context) {
@@ -257,7 +257,7 @@ class ToolbarWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.3),
+                    color: Colors.black.withValues(alpha: 0.3),
                     blurRadius: 4,
                     offset: const Offset(0, 2),
                   ),
@@ -322,7 +322,7 @@ class ToolbarWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.3),
+                color: Colors.black.withValues(alpha: 0.3),
                 blurRadius: 4,
                 offset: const Offset(0, 2),
               ),
@@ -386,7 +386,7 @@ class ToolbarWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.3),
+                  color: Colors.black.withValues(alpha: 0.3),
                   blurRadius: 4,
                   offset: const Offset(0, 2),
                 ),
@@ -416,12 +416,11 @@ class ToolbarWidget extends StatelessWidget {
         filePath = '$filePath.json';
       }
       
+      if (!context.mounted) return;
       context.read<DiagramBloc>().add(SaveDiagramEvent(filePath: filePath));
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Diagram saved successfully!')),
-        );
-      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Diagram saved successfully!')),
+      );
     }
   }
 
@@ -432,12 +431,11 @@ class ToolbarWidget extends StatelessWidget {
     );
     
     if (result != null && result.files.single.path != null) {
+      if (!context.mounted) return;
       context.read<DiagramBloc>().add(LoadDiagramEvent(filePath: result.files.single.path));
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Diagram loaded successfully!')),
-        );
-      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Diagram loaded successfully!')),
+      );
     }
   }
 

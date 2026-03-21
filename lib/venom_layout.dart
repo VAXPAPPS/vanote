@@ -18,7 +18,7 @@ class VenomScaffold extends StatefulWidget {
   final List<Widget>? actions;
 
   const VenomScaffold({
-    Key? key,
+    super.key,
     required this.body,
     this.title = "",
     this.selectedCategory,
@@ -26,7 +26,7 @@ class VenomScaffold extends StatefulWidget {
     this.showAddButton = false,
     this.showDiagramButton = false,
     this.actions,
-  }) : super(key: key);
+  });
 
   @override
   State<VenomScaffold> createState() => _VenomScaffoldState();
@@ -153,7 +153,7 @@ class VenomAppbar extends StatelessWidget {
   final Color textColor; // New property
 
   const VenomAppbar({
-    Key? key,
+    super.key,
     required this.title,
     this.selectedCategory,
     this.showBackButton = false,
@@ -163,7 +163,7 @@ class VenomAppbar extends StatelessWidget {
     required this.onHoverEnter,
     required this.onHoverExit,
     this.textColor = Colors.white, // Default
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -277,11 +277,11 @@ class VenomWindowButton extends StatefulWidget {
   final VoidCallback onPressed;
 
   const VenomWindowButton({
-    Key? key,
+    super.key,
     required this.color,
     required this.icon,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   State<VenomWindowButton> createState() => _VenomWindowButtonState();
@@ -310,7 +310,7 @@ class _VenomWindowButtonState extends State<VenomWindowButton> {
                 _isHovered
                     ? [
                       BoxShadow(
-                        color: widget.color.withOpacity(0.8),
+                        color: widget.color.withValues(alpha: 0.8),
                         blurRadius: 10, // زيادة التوهج قليلاً
                         spreadRadius: 2,
                       ),
@@ -324,7 +324,7 @@ class _VenomWindowButtonState extends State<VenomWindowButton> {
               child: Icon(
                 widget.icon,
                 size: 10,
-                color: Colors.black.withOpacity(0.7),
+                color: Colors.black.withValues(alpha: 0.7),
               ),
             ),
           ),

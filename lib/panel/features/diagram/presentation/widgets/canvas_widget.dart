@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:math' as math;
-import 'package:flutter/gestures.dart';
 import 'package:screenshot/screenshot.dart';
 import '../../domain/entities/diagram_node.dart';
 import '../../domain/entities/diagram_connection.dart';
@@ -13,7 +12,7 @@ import '../painters/diagram_painters.dart';
 import '../painters/shape_painter.dart';
 
 class CanvasWidget extends StatefulWidget {
-  const CanvasWidget({Key? key}) : super(key: key);
+  const CanvasWidget({super.key});
 
   @override
   State<CanvasWidget> createState() => CanvasWidgetState();
@@ -165,7 +164,7 @@ class CanvasWidgetState extends State<CanvasWidget> {
                         fromNode,
                         toNode,
                       );
-                    }).toList(),
+                    }),
                     // Connection preview
                     if (_connectionStartNode != null && _connectionPreviewEnd != null)
                       _buildConnectionPreview(state),
@@ -179,7 +178,7 @@ class CanvasWidgetState extends State<CanvasWidget> {
                         top: node.position.dy,
                         child: _buildNodeWidget(context, state, node),
                       );
-                    }).toList(),
+                    }),
                   ],
                 ),
               ),
@@ -286,7 +285,7 @@ class CanvasWidgetState extends State<CanvasWidget> {
         height: rect.height,
         decoration: BoxDecoration(
           border: Border.all(color: Colors.cyan, width: 2),
-          color: Colors.cyan.withOpacity(0.1),
+          color: Colors.cyan.withValues(alpha: 0.1),
         ),
       ),
     );
@@ -335,7 +334,7 @@ class CanvasWidgetState extends State<CanvasWidget> {
       painter: ConnectionPainter(
         fromPos: fromPos,
         toPos: canvasPos,
-        color: Colors.cyan.withOpacity(0.5),
+        color: Colors.cyan.withValues(alpha: 0.5),
         label: '',
         strokeWidth: 2.5,
       ),
@@ -570,7 +569,7 @@ class CanvasWidgetState extends State<CanvasWidget> {
               width: handleSize,
               height: handleSize,
               decoration: BoxDecoration(
-                color: Colors.cyan.withOpacity(0.8),
+                color: Colors.cyan.withValues(alpha: 0.8),
                 shape: BoxShape.circle,
                 border: Border.all(color: Colors.white, width: 2.5),
               ),
@@ -762,27 +761,27 @@ class CanvasWidgetState extends State<CanvasWidget> {
       : Border.all(color: node.color, width: 2);
 
     final shadow = isSelected
-      ? [BoxShadow(color: Colors.cyan.withOpacity(0.5), blurRadius: 15, spreadRadius: 5)]
-      : [BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 8, spreadRadius: 2)];
+      ? [BoxShadow(color: Colors.cyan.withValues(alpha: 0.5), blurRadius: 15, spreadRadius: 5)]
+      : [BoxShadow(color: Colors.black.withValues(alpha: 0.3), blurRadius: 8, spreadRadius: 2)];
 
     switch (node.shapeType) {
       case ShapeType.circle:
         return BoxDecoration(
           shape: BoxShape.circle,
-          color: node.color.withOpacity(0.2),
+          color: node.color.withValues(alpha: 0.2),
           border: border,
           boxShadow: shadow,
         );
       case ShapeType.roundedRect:
         return BoxDecoration(
-          color: node.color.withOpacity(0.2),
+          color: node.color.withValues(alpha: 0.2),
           borderRadius: BorderRadius.circular(20),
           border: border,
           boxShadow: shadow,
         );
       case ShapeType.diamond:
         return BoxDecoration(
-          color: node.color.withOpacity(0.2),
+          color: node.color.withValues(alpha: 0.2),
           border: border,
           boxShadow: shadow,
           shape: BoxShape.rectangle,
@@ -795,7 +794,7 @@ class CanvasWidgetState extends State<CanvasWidget> {
         );
       default:
         return BoxDecoration(
-          color: node.color.withOpacity(0.2),
+          color: node.color.withValues(alpha: 0.2),
           borderRadius: BorderRadius.circular(8),
           border: border,
           boxShadow: shadow,
@@ -873,8 +872,8 @@ class CanvasWidgetState extends State<CanvasWidget> {
     );
   }
 
-  void _showNodeContextMenu(BuildContext context, DiagramNode node, Offset position) {
-    showMenu<String>(
+  Future<void> _showNodeContextMenu(BuildContext context, DiagramNode node, Offset position) async {
+    final value = await showMenu<String>(
       context: context,
       position: RelativeRect.fromLTRB(position.dx, position.dy, position.dx, position.dy),
       items: [
@@ -913,17 +912,17 @@ class CanvasWidgetState extends State<CanvasWidget> {
         ),
       ],
       color: const Color.fromARGB(200, 30, 30, 30),
-    ).then((value) {
-      if (value == 'edit') {
-        context.read<DiagramBloc>().add(SelectNodeEvent(nodeId: node.id));
-        context.read<DiagramBloc>().add(const ShowPropertiesPanelEvent(show: true));
-      } else if (value == 'duplicate') {
-        context.read<DiagramBloc>().add(SelectNodeEvent(nodeId: node.id));
-        context.read<DiagramBloc>().add(const DuplicateSelectedEvent());
-      } else if (value == 'delete') {
-        context.read<DiagramBloc>().add(DeleteNodeEvent(nodeId: node.id));
-      }
-    });
+    );
+    if (!context.mounted) return;
+    if (value == 'edit') {
+      context.read<DiagramBloc>().add(SelectNodeEvent(nodeId: node.id));
+      context.read<DiagramBloc>().add(const ShowPropertiesPanelEvent(show: true));
+    } else if (value == 'duplicate') {
+      context.read<DiagramBloc>().add(SelectNodeEvent(nodeId: node.id));
+      context.read<DiagramBloc>().add(const DuplicateSelectedEvent());
+    } else if (value == 'delete') {
+      context.read<DiagramBloc>().add(DeleteNodeEvent(nodeId: node.id));
+    }
   }
 
   void _handleKeyEvent(KeyEvent event) {
@@ -984,4 +983,3 @@ class CanvasWidgetState extends State<CanvasWidget> {
     }
   }
 }
-

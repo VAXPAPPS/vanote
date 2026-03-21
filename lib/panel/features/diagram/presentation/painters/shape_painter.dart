@@ -14,7 +14,7 @@ class ShapePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = node.color.withOpacity(0.2)
+      ..color = node.color.withValues(alpha: 0.2)
       ..style = PaintingStyle.fill;
 
     final borderPaint = Paint()
@@ -33,7 +33,7 @@ class ShapePainter extends CustomPainter {
     // Draw shadow
     if (isSelected) {
       final shadowPaint = Paint()
-        ..color = Colors.cyan.withOpacity(0.5)
+        ..color = Colors.cyan.withValues(alpha: 0.5)
         ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 15);
       canvas.drawPath(path, shadowPaint);
     }
@@ -179,4 +179,3 @@ class ShapePainter extends CustomPainter {
         oldDelegate.node.height != node.height;
   }
 }
-

@@ -63,7 +63,7 @@ class _HomePageState extends State<HomePage> {
                                   ).textTheme.titleLarge?.copyWith(
                                     color: DefaultTextStyle.of(
                                       context,
-                                    ).style.color?.withOpacity(0.7),
+                                    ).style.color?.withValues(alpha: 0.7),
                                   ),
                                 ),
                                 const SizedBox(height: 8),
@@ -74,7 +74,7 @@ class _HomePageState extends State<HomePage> {
                                   ).textTheme.bodyMedium?.copyWith(
                                     color: DefaultTextStyle.of(
                                       context,
-                                    ).style.color?.withOpacity(0.5),
+                                    ).style.color?.withValues(alpha: 0.5),
                                   ),
                                 ),
                               ],
@@ -119,7 +119,7 @@ class _HomePageState extends State<HomePage> {
     final categories = ['All', ...taskProvider.categories];
 
     return ClipRRect(
-      child: Container(
+      child: SizedBox(
         width: 280,
         child: Column(
           children: [
@@ -326,7 +326,7 @@ class _CategoryListItemState extends State<_CategoryListItem> {
                   widget.isSelected || _isHovered
                       ? theme.colorScheme.primary
                       // Use inherited color (from VenomLayout) when not selected
-                      : IconTheme.of(context).color?.withOpacity(0.7),
+                      : IconTheme.of(context).color?.withValues(alpha: 0.7),
             ),
           ),
           title: Text(
